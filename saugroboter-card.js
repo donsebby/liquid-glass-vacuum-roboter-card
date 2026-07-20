@@ -56,12 +56,12 @@ class SaugroboterCard extends HTMLElement {
               <div class="btn" data-action="stop">${this._icon('stop')}</div>
               <div class="btn" data-action="locate">${this._icon('locate')}</div>
               <div class="btn" data-action="dock">${this._icon('dock')}</div>
-              ${e.skip_boolean ? `<div class="btn" data-action="skip" data-role="skipbtn" title="N&auml;chsten Lauf aussetzen">${this._icon('disable')}</div>` : ''}
+              ${e.skip_boolean ? `<div class="btn" data-action="skip" data-role="skipbtn" title="Skip Next Run">${this._icon('disable')}</div>` : ''}
             </div>
           </div>
           <div class="map${e.map_rotate ? ' rotated' : ''}${e.map_camera ? ' has-camera' : ''}" data-role="map">
             <img data-role="map-img" style="display:none" />
-            <span class="map-placeholder" data-role="map-placeholder">Karte</span>
+            <span class="map-placeholder" data-role="map-placeholder">Map</span>
           </div>
         </div>
       </div>
@@ -192,13 +192,13 @@ class SaugroboterCard extends HTMLElement {
       const state = stateObj?.state || 'unknown';
 
       const statusMap = {
-        docked: 'Angedockt',
-        cleaning: 'Reinigt',
-        paused: 'Pausiert',
-        returning: 'Kehrt zur' + String.fromCharCode(252) + 'ck',
-        idle: 'Bereit',
-        error: 'Fehler',
-        unavailable: 'Nicht verf' + String.fromCharCode(252) + 'gbar'
+        docked: 'Docked',
+        cleaning: 'Cleaning',
+        paused: 'Paused',
+        returning: 'Returning to Dock',
+        idle: 'Idle',
+        error: 'Error',
+        unavailable: 'Unavailable'
       };
       card.querySelector('[data-role="status"]').textContent = statusMap[state] || state;
       card.querySelector('[data-role="playicon"]').innerHTML =
@@ -238,6 +238,6 @@ customElements.define('saugroboter-card', SaugroboterCard);
 window.customCards = window.customCards || [];
 window.customCards.push({
   type: 'saugroboter-card',
-  name: 'Saugroboter Card',
-  description: 'Vacuum widgets styled to match the Thermostate card look.'
+  name: 'Vacuum Robot Card',
+  description: 'Vacuum widgets styled to match the Thermostat Glass Card look.'
 });
