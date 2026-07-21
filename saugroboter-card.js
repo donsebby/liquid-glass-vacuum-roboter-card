@@ -95,9 +95,11 @@ class SaugroboterCard extends HTMLElement {
           background:linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.05));
           border:1px solid rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center;
           color: var(--primary-text-color, rgba(255,255,255,0.85));
+          backdrop-filter: saturate(180%) brightness(1.15); -webkit-backdrop-filter: saturate(180%) brightness(1.15);
+          box-shadow: inset 2px 0 4px rgba(80,200,255,0.26), inset -2px 0 4px rgba(255,90,190,0.24);
           transition: border-color 0.3s ease, box-shadow 0.3s ease; }
         .avatar-circle.active { border-color: rgba(0,191,165,0.7);
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 0 4px rgba(0,191,165,0.6), 0 0 18px rgba(0,191,165,0.5); }
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 0 4px rgba(0,191,165,0.6), 0 0 18px rgba(0,191,165,0.5), inset 2px 0 4px rgba(80,200,255,0.24), inset -2px 0 4px rgba(255,90,190,0.22); }
         .badge { position:absolute; top:-2px; right:-2px; width:16px; height:16px; border-radius:50%;
           background:rgba(30,32,36,0.9); border:1px solid rgba(255,255,255,0.15); z-index:2;
           display:flex; align-items:center; justify-content:center; }
@@ -115,6 +117,8 @@ class SaugroboterCard extends HTMLElement {
         .btn { width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.09);
           border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;
           color: var(--primary-text-color, rgba(255,255,255,0.85));
+          backdrop-filter: saturate(180%) brightness(1.1); -webkit-backdrop-filter: saturate(180%) brightness(1.1);
+          box-shadow: inset 1px 0 3px rgba(80,200,255,0.24), inset -1px 0 3px rgba(255,90,190,0.22);
           cursor:pointer; }
         .btn:hover { background: rgba(255,255,255,0.15); }
         .btn.active { background: rgba(255,159,10,0.35); border-color: rgba(255,159,10,0.55); }
