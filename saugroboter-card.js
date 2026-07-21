@@ -104,10 +104,10 @@ class SaugroboterCard extends HTMLElement {
           background:rgba(30,32,36,0.9); border:1px solid rgba(255,255,255,0.15); z-index:2;
           display:flex; align-items:center; justify-content:center; }
         .meta { display:flex; flex-direction:column; gap:2px; }
-        .name { color: rgba(255,255,255,0.95); font-size:16px; font-weight:600; }
+        .name { color: var(--primary-text-color, rgba(255,255,255,0.95)); font-size:16px; font-weight:600; }
         .name.clickable { cursor:pointer; }
         .name.clickable:hover { text-decoration: underline; text-decoration-color: rgba(255,255,255,0.35); }
-        .status { color: rgba(255,255,255,0.5); font-size:13px; }
+        .status { color: var(--secondary-text-color, rgba(255,255,255,0.5)); font-size:13px; }
         .map { position:relative; flex:1 1 auto; min-width:0; height:112px; border-radius:14px; overflow:hidden;
           display:flex; align-items:center; justify-content:center; cursor:default; }
         .map.has-camera { cursor:pointer; }
@@ -125,8 +125,6 @@ class SaugroboterCard extends HTMLElement {
       </style>
       <ha-card>
         <div class="cards">
-          <div class="glow-a"></div>
-          <div class="glow-b"></div>
           ${rows}
         </div>
       </ha-card>
