@@ -28,7 +28,7 @@ class SaugroboterCard extends HTMLElement {
       stop: '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>',
       locate: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-6.2-7-11.3A7 7 0 0 1 12 3a7 7 0 0 1 7 6.7C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.3" fill="currentColor" stroke="none"/></svg>',
       dock: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 11 L12 4 L20 11" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10 V19 a1 1 0 0 0 1 1 H17 a1 1 0 0 0 1 -1 V10" stroke-linejoin="round"/></svg>',
-      disable: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="14" r="7.5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="14" r="2.2" fill="currentColor"/><path d="M9 6 H15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="4" y1="4" x2="20" y2="22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+      disable: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/><path d="M9 4 H15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="4" y1="3" x2="20" y2="21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
       robot: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.6" fill="currentColor"/><circle cx="12" cy="6" r="1" fill="currentColor"/></svg>',
       charging: '<svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2 L4 14 h6 l-1 8 l9 -12 h-6 Z" fill="rgba(255,255,255,0.6)"/></svg>'
     };
@@ -122,6 +122,7 @@ class SaugroboterCard extends HTMLElement {
           cursor:pointer; }
         .btn:hover { background: rgba(255,255,255,0.15); }
         .btn.active { background: rgba(255,159,10,0.35); border-color: rgba(255,159,10,0.55); }
+        .btn [data-role="playicon"] { display:flex; align-items:center; justify-content:center; }
       </style>
       <ha-card>
         <div class="cards">
