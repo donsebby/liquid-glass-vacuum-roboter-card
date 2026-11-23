@@ -1,9 +1,17 @@
+const CARD_VERSION = '1.1.0';
+// eslint-disable-next-line no-console
+console.info(`%c SAUGROBOTER-CARD %c v${CARD_VERSION} `, 'color: white; background: #00bfa5; font-weight: 700;', 'color: #00bfa5; background: white; font-weight: 700;');
+
 class SaugroboterCard extends HTMLElement {
   setConfig(config) {
     if (!config.entities || !Array.isArray(config.entities)) {
       throw new Error('saugroboter-card: "entities" list is required');
     }
     this._config = config;
+    this._expanded = this._expanded || new Set();
+    // Shadow DOM keeps the card's generic class names (.card, .btn, .name,
+    // .map ...) from leaking into or being styled by neighbouring cards.
+    if (!this.shadowRoot) this.attachShadow({ mode: 'open' });
     this._render();
   }
 
@@ -59,15 +67,16 @@ class SaugroboterCard extends HTMLElement {
               ${e.skip_boolean ? `<div class="btn" data-action="skip" data-role="skipbtn" title="Skip Next Run">${this._icon('disable')}</div>` : ''}
             </div>
           </div>
-          <div class="map${e.map_rotate ? ' rotated' : ''}${e.map_camera ? ' has-camera' : ''}" data-role="map">
+          ${e.map_camera ? `<div class="map${e.map_rotate ? ' rotated' : ''} has-camera" data-role="map">
             <img data-role="map-img" style="display:none" />
-            <span class="map-placeholder" data-role="map-placeholder">Map</span>
-          </div>
+            <span class="map-placeholder" data-role="map-placeholder"></span>
+          </div>` : ''}
         </div>
+        ${e.status_entity ? `<div class="sline" data-role="sline" style="display:none"><span class="stxt" data-role="stxt"></span></div>` : ''}
       </div>
     `).join('');
 
-    this.innerHTML = `
+    this.shadowRoot.innerHTML = `
       <style>
         ha-card { background: transparent; box-shadow: none; border: none; }
         .cards { position:relative; display:flex; flex-direction:column; border-radius:24px; overflow:hidden;
@@ -123,6 +132,13 @@ class SaugroboterCard extends HTMLElement {
         .btn:hover { background: rgba(255,255,255,0.15); }
         .btn.active { background: rgba(255,159,10,0.35); border-color: rgba(255,159,10,0.55); }
         .btn [data-role="playicon"] { display:flex; align-items:center; justify-content:center; }
+        .sline { margin-top:12px; padding-top:9px; border-top:1px solid rgba(255,255,255,0.08);
+          color: var(--secondary-text-color, rgba(255,255,255,0.6)); font-size:12.5px; line-height:1.35; }
+        .sline .stxt { display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;
+          cursor:pointer; -webkit-tap-highlight-color:transparent; }
+        .sline.expanded .stxt { display:block; -webkit-line-clamp:unset; overflow:visible; }
+        .sline.active .stxt { color: rgb(0,191,165); font-weight:600; }
+        .sline.problem .stxt { color: rgb(255,159,10); font-weight:600; }
       </style>
       <ha-card>
         <div class="cards">
@@ -132,7 +148,7 @@ class SaugroboterCard extends HTMLElement {
     `;
 
     this._config.entities.forEach((e, i) => {
-      const card = this.querySelector(`.card[data-idx="${i}"]`);
+      const card = this.shadowRoot.querySelector(`.card[data-idx="${i}"]`);
       card.querySelector('[data-action="playpause"]').addEventListener('click', () => {
         const state = this._hass?.states[e.entity]?.state;
         this._callService('vacuum', state === 'cleaning' ? 'pause' : 'start', e.entity);
@@ -143,6 +159,18 @@ class SaugroboterCard extends HTMLElement {
       const skipBtn = card.querySelector('[data-action="skip"]');
       if (skipBtn && e.skip_boolean) {
         skipBtn.addEventListener('click', () => this._callService('input_boolean', 'toggle', e.skip_boolean));
+      }
+
+      // Optional status line (status_entity): one line, tap to expand.
+      const sline = card.querySelector('[data-role="sline"]');
+      if (sline) {
+        sline.querySelector('[data-role="stxt"]').addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          if (this._expanded.has(e.entity)) this._expanded.delete(e.entity);
+          else this._expanded.add(e.entity);
+          sline.classList.toggle('expanded', this._expanded.has(e.entity));
+        });
+        sline.classList.toggle('expanded', this._expanded.has(e.entity));
       }
 
       const mapEl = card.querySelector('[data-role="map"]');
@@ -189,20 +217,15 @@ class SaugroboterCard extends HTMLElement {
   _updateCards() {
     if (!this._hass || !this._config) return;
     this._config.entities.forEach((e, i) => {
-      const card = this.querySelector(`.card[data-idx="${i}"]`);
+      const card = this.shadowRoot.querySelector(`.card[data-idx="${i}"]`);
       if (!card) return;
       const stateObj = this._hass.states[e.entity];
       const state = stateObj?.state || 'unknown';
 
-      const statusMap = {
-        docked: 'Docked',
-        cleaning: 'Cleaning',
-        paused: 'Paused',
-        returning: 'Returning to Dock',
-        idle: 'Idle',
-        error: 'Error',
-        unavailable: 'Unavailable'
-      };
+      const de = String((this._hass.locale && this._hass.locale.language) || this._hass.language || 'en').startsWith('de');
+      const statusMap = de
+        ? { docked: 'In der Station', cleaning: 'Saugt', paused: 'Pausiert', returning: 'F\u00e4hrt zur\u00fcck', idle: 'Bereit', error: 'Fehler', unavailable: 'Nicht erreichbar' }
+        : { docked: 'Docked', cleaning: 'Cleaning', paused: 'Paused', returning: 'Returning to Dock', idle: 'Idle', error: 'Error', unavailable: 'Unavailable' };
       card.querySelector('[data-role="status"]').textContent = statusMap[state] || state;
       card.querySelector('[data-role="playicon"]').innerHTML =
         state === 'cleaning' ? this._icon('pause') : this._icon('play');
@@ -212,6 +235,22 @@ class SaugroboterCard extends HTMLElement {
       const avatarGlow = card.querySelector('[data-role="avatarglow"]');
       if (avatarCircle) avatarCircle.classList.toggle('active', running);
       if (avatarGlow) avatarGlow.classList.toggle('active', running);
+
+      if (e.status_entity) {
+        const sline = card.querySelector('[data-role="sline"]');
+        const st = this._hass.states[e.status_entity];
+        if (sline) {
+          const ok = st && !['unknown', 'unavailable', ''].includes(st.state);
+          sline.style.display = ok ? '' : 'none';
+          if (ok) {
+            const txt = sline.querySelector('[data-role="stxt"]');
+            if (txt.textContent !== st.state) { txt.textContent = st.state; txt.title = st.state; }
+            const problem = st.state.startsWith('\u26a0');
+            sline.classList.toggle('problem', problem);
+            sline.classList.toggle('active', running && !problem);
+          }
+        }
+      }
 
       if (e.map_camera) {
         const camState = this._hass.states[e.map_camera];

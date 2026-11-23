@@ -5,6 +5,8 @@ A frosted-glass ("Liquid Glass") styled vacuum widget for Home Assistant
 buttons (start/pause, stop, locate, dock, optional skip-next-run) and an optional map/camera
 preview.
 
+![Vacuum Robot Card with two robots and status lines](asset/vacuum-robot-card.png)
+
 ## Installation
 
 ### HACS (custom repository)
@@ -43,17 +45,28 @@ entities:
 | `map_camera` | string | Camera entity showing a live map/snapshot image, rendered inline |
 | `map_rotate` | boolean | Rotates the map image 90° to better fit the available space |
 | `skip_boolean` | string | `input_boolean` entity toggled by an optional "skip next run" button |
+| `status_entity` | string | Optional sensor shown as a status line under the robot (e.g. room, progress or a maintenance hint). One line, tap to expand; text starting with ⚠ is shown in orange, and while the robot runs the line is shown in teal |
 
 ## Features
 
 - Play/pause toggles between `vacuum.start` and `vacuum.pause` based on live state
 - Stop, locate, and return-to-base buttons call the corresponding `vacuum` services
 - Status text (Docked/Cleaning/Paused/Returning to Dock/Idle/Error/Unavailable) reflects the
-  entity's current state
+  entity's current state, in German when Home Assistant runs in German
+- The map area only appears when a `map_camera` is configured
 - Icon + border glow around the avatar activates automatically while the vacuum is running
   (`cleaning`/`returning`)
 - Icons are theme-adaptive (`currentColor` + `var(--primary-text-color)`), so they render
   correctly in both light and dark Home Assistant themes
+
+## Changelog
+
+### 1.1.0
+- New `status_entity` option: a one-line status under each robot (tap to expand), orange for ⚠ hints, teal while running.
+- Status texts follow the Home Assistant language (German/English).
+- No empty "Map" placeholder when no `map_camera` is set.
+- Renders into its own Shadow DOM, so its styles can't clash with other cards.
+- Version banner in the browser console.
 
 ## License
 
