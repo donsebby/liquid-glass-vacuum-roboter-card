@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/30188690/README.md)
 # Vacuum Robot Card
 
 A frosted-glass ("Liquid Glass") styled vacuum widget for Home Assistant
