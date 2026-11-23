@@ -41,7 +41,7 @@ entities:
 | Option | Type | Default | Description |
 |---|---|---|---|
 | `entities` | list | — | **Required.** List of robots (see below) |
-| `look` | string | `glass` | `solid` switches to calm solid surfaces and flat buttons without glass, blur or glows, see *Solid look* |
+| `look` | string | theme / `glass` | `solid` switches to calm solid surfaces and flat buttons without glass, blur or glows, `glass` forces glass; unset = theme's `lg-look`, see *Solid look* |
 
 ### Per-entity options (inside `entities`)
 
@@ -84,6 +84,13 @@ entities:
     map_camera: camera.roborock_map
 ```
 
+The look can also come from your theme, for all Liquid Glass cards at once: set `lg-look: solid` in the Home Assistant theme (the CSS variable `--lg-look`, value `solid` or `glass`). `look:` on a single card overrides the theme; without either the card stays glass. The card picks up theme switches on its own.
+
+```yaml
+# in your Home Assistant theme
+lg-look: solid
+```
+
 ## Theme variables
 
 Like the other Liquid Glass cards, this card reads two optional CSS variables, so one theme can align all of them:
@@ -99,6 +106,7 @@ Without them nothing changes. Options set on the card itself (e.g. `blur`) still
 ## Changelog
 
 ### 1.2.0
+- The look can come from the theme: `lg-look: solid` (CSS variable `--lg-look`) switches all Liquid Glass cards to the solid look; `look:` on the card overrides it (see *Solid look*).
 - New option `look: solid`: calm solid surfaces, a filled robot icon while running, flat round buttons, no glass, blur or glows. Uses the optional design tokens `--surface` and `--lg-tile-bg` (see *Solid look*). Without the option the card looks exactly as before.
 
 ### 1.1.0

@@ -8,6 +8,9 @@ class SaugroboterCard extends HTMLElement {
       throw new Error('saugroboter-card: "entities" list is required');
     }
     this._config = config;
+    // `look: solid|glass` in the config wins; otherwise the theme decides
+    // via the CSS variable --lg-look (see _effectiveLook / _checkLook).
+    this._solid = this._effectiveLook(config) === 'solid';
     this._expanded = this._expanded || new Set();
     // Shadow DOM keeps the card's generic class names (.card, .btn, .name,
     // .map ...) from leaking into or being styled by neighbouring cards.
@@ -17,7 +20,57 @@ class SaugroboterCard extends HTMLElement {
 
   set hass(hass) {
     this._hass = hass;
+    // Theme switches arrive via hass.themes - only then re-read --lg-look
+    // (no getComputedStyle on every hass tick).
+    const th = hass && hass.themes;
+    const themeSig = th ? th.theme + '|' + th.darkMode : '';
+    if (th !== this._themesRef || themeSig !== this._themeSig) {
+      this._themesRef = th;
+      this._themeSig = themeSig;
+      this._scheduleLookCheck();
+    }
     this._updateCards();
+  }
+
+  connectedCallback() {
+    if (!this._onThemeChanged) this._onThemeChanged = () => this._scheduleLookCheck();
+    window.addEventListener('lg-theme-changed', this._onThemeChanged);
+    this._scheduleLookCheck();
+  }
+
+  disconnectedCallback() {
+    if (this._onThemeChanged) window.removeEventListener('lg-theme-changed', this._onThemeChanged);
+    cancelAnimationFrame(this._lookRaf);
+  }
+
+  // Effective look: `look: solid|glass` in the config, else the theme's
+  // --lg-look variable on this element (quotes tolerated), else glass.
+  _effectiveLook(config) {
+    const own = config && config.look;
+    if (own === 'solid' || own === 'glass') return own;
+    let v = '';
+    try { v = getComputedStyle(this).getPropertyValue('--lg-look'); } catch (e) { v = ''; }
+    v = String(v || '').trim().replace(/^["']+|["']+$/g, '').trim().toLowerCase();
+    return v === 'solid' ? 'solid' : 'glass';
+  }
+
+  // Re-read the theme now and once more on the next frame (the theme may
+  // only apply its variables after this element got connected / hass).
+  _scheduleLookCheck() {
+    this._checkLook();
+    cancelAnimationFrame(this._lookRaf);
+    this._lookRaf = requestAnimationFrame(() => this._checkLook());
+  }
+
+  _checkLook() {
+    const c = this._config;
+    if (!c || c.look === 'solid' || c.look === 'glass' || !this.shadowRoot) return;
+    const solid = this._effectiveLook(c) === 'solid';
+    if (solid === this._solid) return;
+    // Only the class depends on the look - no rebuild needed.
+    this._solid = solid;
+    const root = this.shadowRoot.querySelector('.cards');
+    if (root) root.classList.toggle('solid', solid);
   }
 
   getCardSize() {
@@ -182,7 +235,7 @@ class SaugroboterCard extends HTMLElement {
         }
       </style>
       <ha-card>
-        <div class="cards${this._config.look === 'solid' ? ' solid' : ''}">
+        <div class="cards${this._solid ? ' solid' : ''}">
           ${rows}
         </div>
       </ha-card>
