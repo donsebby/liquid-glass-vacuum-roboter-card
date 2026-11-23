@@ -79,10 +79,10 @@ class SaugroboterCard extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>
         ha-card { background: transparent; box-shadow: none; border: none; }
-        .cards { position:relative; display:flex; flex-direction:column; border-radius:24px; overflow:hidden;
+        .cards { position:relative; display:flex; flex-direction:column; border-radius:var(--lg-radius, 24px); overflow:hidden;
           background: linear-gradient(155deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.025) 45%, rgba(255,255,255,0.05) 100%);
-          backdrop-filter: blur(20px) saturate(180%);
-          -webkit-backdrop-filter: blur(20px) saturate(180%);
+          backdrop-filter: var(--lg-backdrop, blur(20px) saturate(180%));
+          -webkit-backdrop-filter: var(--lg-backdrop, blur(20px) saturate(180%));
           border:1px solid rgba(255,255,255,0.14);
           box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), inset 0 0 0 1px rgba(255,255,255,0.03), 0 8px 24px rgba(0,0,0,0.3);
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }

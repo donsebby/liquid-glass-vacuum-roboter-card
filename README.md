@@ -59,9 +59,22 @@ entities:
 - Icons are theme-adaptive (`currentColor` + `var(--primary-text-color)`), so they render
   correctly in both light and dark Home Assistant themes
 
+## Theme variables
+
+Like the other Liquid Glass cards, this card reads two optional CSS variables, so one theme can align all of them:
+
+```yaml
+# in your Home Assistant theme
+lg-radius: 22px                          # corner radius of the glass panel
+lg-backdrop: blur(22px) saturate(180%)   # blur/saturation behind the panel
+```
+
+Without them nothing changes. Options set on the card itself (e.g. `blur`) still win.
+
 ## Changelog
 
 ### 1.1.0
+- Reads the optional theme variables `--lg-radius` and `--lg-backdrop` (see *Theme variables*).
 - New `status_entity` option: a one-line status under each robot (tap to expand), orange for ⚠ hints, teal while running.
 - Status texts follow the Home Assistant language (German/English).
 - No empty "Map" placeholder when no `map_camera` is set.
