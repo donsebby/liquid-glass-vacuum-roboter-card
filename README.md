@@ -36,6 +36,13 @@ entities:
     skip_boolean: input_boolean.roborock_skip_next_run
 ```
 
+### Card-level options
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `entities` | list | — | **Required.** List of robots (see below) |
+| `look` | string | `glass` | `solid` switches to calm solid surfaces and flat buttons without glass, blur or glows, see *Solid look* |
+
 ### Per-entity options (inside `entities`)
 
 | Option | Type | Description |
@@ -59,6 +66,24 @@ entities:
 - Icons are theme-adaptive (`currentColor` + `var(--primary-text-color)`), so they render
   correctly in both light and dark Home Assistant themes
 
+## Solid look
+
+`look: solid` replaces the glass with quiet, solid surfaces — for dashboards whose page background already does the visual work:
+
+- **Panel:** solid surface (`--surface`, default the theme's card colour at 88 %), thin 1 px edges, `--lg-radius` corners (default 20 px), no blur, no gradient, no shadow.
+- **Robot icon:** a plain round circle — neutral while docked, filled teal while the robot is cleaning or returning (no glow).
+- **Buttons:** flat, fully round 44 px buttons without glass edges; the skip-next-run button is filled orange while the next run is skipped.
+- **Map:** sits on a solid inner tile (`--lg-tile-bg`) with rounded corners.
+- Text sizes follow the other solid cards (name 15 px, status 13 px); `prefers-reduced-motion` is respected.
+
+```yaml
+type: custom:saugroboter-card
+look: solid
+entities:
+  - entity: vacuum.roborock_s7
+    map_camera: camera.roborock_map
+```
+
 ## Theme variables
 
 Like the other Liquid Glass cards, this card reads two optional CSS variables, so one theme can align all of them:
@@ -72,6 +97,9 @@ lg-backdrop: blur(22px) saturate(180%)   # blur/saturation behind the panel
 Without them nothing changes. Options set on the card itself (e.g. `blur`) still win.
 
 ## Changelog
+
+### 1.2.0
+- New option `look: solid`: calm solid surfaces, a filled robot icon while running, flat round buttons, no glass, blur or glows. Uses the optional design tokens `--surface` and `--lg-tile-bg` (see *Solid look*). Without the option the card looks exactly as before.
 
 ### 1.1.0
 - Reads the optional theme variables `--lg-radius` and `--lg-backdrop` (see *Theme variables*).

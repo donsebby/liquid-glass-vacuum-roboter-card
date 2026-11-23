@@ -1,4 +1,4 @@
-const CARD_VERSION = '1.1.0';
+const CARD_VERSION = '1.2.0';
 // eslint-disable-next-line no-console
 console.info(`%c SAUGROBOTER-CARD %c v${CARD_VERSION} `, 'color: white; background: #00bfa5; font-weight: 700;', 'color: #00bfa5; background: white; font-weight: 700;');
 
@@ -139,9 +139,50 @@ class SaugroboterCard extends HTMLElement {
         .sline.expanded .stxt { display:block; -webkit-line-clamp:unset; overflow:visible; }
         .sline.active .stxt { color: rgb(0,191,165); font-weight:600; }
         .sline.problem .stxt { color: rgb(255,159,10); font-weight:600; }
+        /* look: solid - calm solid surfaces instead of glass: no blur, no
+           gradients, no cyan/pink inner edges, no glows. The robot icon
+           circle fills with teal while the robot runs; the skip button
+           fills orange while the next run is skipped. Only applies with
+           .solid, the glass rules above stay untouched. */
+        .cards.solid { --vc-ink: var(--primary-text-color, #fff); --c: rgb(0,191,165);
+          background: var(--surface, color-mix(in srgb, var(--card-background-color, #1c1f28) 88%, transparent));
+          backdrop-filter:none; -webkit-backdrop-filter:none;
+          border:1px solid rgba(255,255,255,0.06); border-radius:var(--lg-radius, 20px); box-shadow:none; }
+        .cards.solid .card { padding:16px; }
+        .cards.solid .card + .card { border-top:1px solid rgba(255,255,255,0.06); }
+        .cards.solid .card-inner { gap:12px; }
+        .cards.solid .avatar { width:44px; height:44px; display:flex; align-items:center; justify-content:center; }
+        .cards.solid .avatar-glow { display:none; }
+        .cards.solid .avatar-circle { width:36px; height:36px; border:none; box-shadow:none;
+          backdrop-filter:none; -webkit-backdrop-filter:none;
+          background: color-mix(in srgb, var(--vc-ink) 10%, transparent);
+          color: var(--secondary-text-color, rgba(255,255,255,0.6));
+          transition: background .2s ease, color .2s ease; }
+        .cards.solid .avatar-circle svg { width:20px; height:20px; }
+        .cards.solid .avatar-circle.active { background: var(--c); color:#16181d; border:none; box-shadow:none; }
+        .cards.solid .badge { top:0; right:0; background: var(--surface, #1c1f28); border:1px solid rgba(255,255,255,0.06); }
+        .cards.solid .name { font-size:15px; font-weight:600; }
+        .cards.solid .status { font-size:13px; }
+        .cards.solid .buttons { gap:6px; }
+        .cards.solid .btn { width:44px; height:44px; border-radius:999px; border:none; box-shadow:none;
+          backdrop-filter:none; -webkit-backdrop-filter:none;
+          background: color-mix(in srgb, var(--vc-ink) 14%, transparent);
+          transition: background .15s ease, color .15s ease; }
+        .cards.solid .btn:hover { background: color-mix(in srgb, var(--vc-ink) 20%, transparent); }
+        .cards.solid .btn:active { background: color-mix(in srgb, var(--vc-ink) 26%, transparent); }
+        .cards.solid .btn.active { background: rgb(255,159,10); color:#16181d; border:none; }
+        .cards.solid .map { border-radius: calc(var(--lg-radius, 20px) - 4px);
+          background: var(--lg-tile-bg, color-mix(in srgb, var(--vc-ink) 8%, transparent));
+          border:1px solid rgba(255,255,255,0.04); box-sizing:border-box; }
+        .cards.solid .map-placeholder { font-size:12px; color: var(--secondary-text-color, rgba(255,255,255,0.6)); }
+        .cards.solid .sline { margin-top:12px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.06); font-size:13px; }
+        .cards.solid .sline.active .stxt { color: color-mix(in srgb, var(--c) 70%, var(--vc-ink)); }
+        @media (prefers-reduced-motion: reduce) {
+          .cards.solid .avatar-circle, .cards.solid .btn { transition:none; }
+        }
       </style>
       <ha-card>
-        <div class="cards">
+        <div class="cards${this._config.look === 'solid' ? ' solid' : ''}">
           ${rows}
         </div>
       </ha-card>
