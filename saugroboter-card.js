@@ -1,4 +1,4 @@
-const CARD_VERSION = '1.3.0';
+const CARD_VERSION = '1.3.1';
 // eslint-disable-next-line no-console
 console.info(`%c SAUGROBOTER-CARD %c v${CARD_VERSION} `, 'color: white; background: #00bfa5; font-weight: 700;', 'color: #00bfa5; background: white; font-weight: 700;');
 
@@ -198,9 +198,9 @@ class SaugroboterCard extends HTMLElement {
            fills orange while the next run is skipped. Only applies with
            .solid, the glass rules above stay untouched. */
         .cards.solid { --vc-ink: var(--primary-text-color, #fff); --c: rgb(0,191,165);
-          background: var(--lg-tile-bg, var(--surface, color-mix(in srgb, var(--card-background-color, #1c1f28) 88%, transparent)));
+          background: var(--lg-panel-bg, var(--surface, color-mix(in srgb, var(--card-background-color, #1c1f28) 88%, transparent)));
           backdrop-filter: var(--lg-panel-backdrop, none); -webkit-backdrop-filter: var(--lg-panel-backdrop, none);
-          border: var(--lg-tile-edge, 1px solid rgba(255,255,255,0.06)); border-radius:var(--lg-radius, 20px); box-shadow: var(--lg-tile-shadow, none); }
+          border: var(--lg-panel-edge, 1px solid rgba(255,255,255,0.06)); border-radius:var(--lg-radius, 20px); box-shadow: var(--lg-panel-shadow, none); }
         .cards.solid .card { padding:16px; }
         .cards.solid .card + .card { border-top:1px solid rgba(255,255,255,0.06); }
         .cards.solid .card-inner { gap:12px; }
