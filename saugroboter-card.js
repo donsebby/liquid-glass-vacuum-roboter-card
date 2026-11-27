@@ -198,7 +198,7 @@ class SaugroboterCard extends HTMLElement {
            fills orange while the next run is skipped. Only applies with
            .solid, the glass rules above stay untouched. */
         .cards.solid { --vc-ink: var(--primary-text-color, #fff); --c: rgb(0,191,165);
-          background: var(--surface, color-mix(in srgb, var(--card-background-color, #1c1f28) 88%, transparent));
+          background: var(--lg-tile-bg, var(--surface, color-mix(in srgb, var(--card-background-color, #1c1f28) 88%, transparent)));
           backdrop-filter: var(--lg-panel-backdrop, none); -webkit-backdrop-filter: var(--lg-panel-backdrop, none);
           border: var(--lg-tile-edge, 1px solid rgba(255,255,255,0.06)); border-radius:var(--lg-radius, 20px); box-shadow: var(--lg-tile-shadow, none); }
         .cards.solid .card { padding:16px; }
