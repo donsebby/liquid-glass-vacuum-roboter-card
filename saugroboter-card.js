@@ -217,13 +217,13 @@ class SaugroboterCard extends HTMLElement {
         .cards.solid .name { font-size:15px; font-weight:600; }
         .cards.solid .status { font-size:13px; }
         .cards.solid .buttons { gap:6px; }
-        .cards.solid .btn { width:44px; height:44px; border-radius:999px; border:none; box-shadow:none;
+        .cards.solid .btn { width:44px; height:44px; border-radius:999px; border:var(--lg-tile-edge, none); box-shadow:var(--lg-tile-shadow, none); box-sizing:border-box;
           backdrop-filter:none; -webkit-backdrop-filter:none;
           background: color-mix(in srgb, var(--vc-ink) 14%, transparent);
           transition: background .15s ease, color .15s ease; }
         .cards.solid .btn:hover { background: color-mix(in srgb, var(--vc-ink) 20%, transparent); }
         .cards.solid .btn:active { background: color-mix(in srgb, var(--vc-ink) 26%, transparent); }
-        .cards.solid .btn.active { background: rgb(255,159,10); color:#16181d; border:none; }
+        .cards.solid .btn.active { background: rgb(255,159,10); color:#16181d; }
         .cards.solid .map { border-radius: calc(var(--lg-radius, 20px) - 4px);
           background: var(--lg-tile-bg, color-mix(in srgb, var(--vc-ink) 8%, transparent));
           border:var(--lg-tile-edge, 1px solid rgba(255,255,255,0.04)); box-shadow:var(--lg-tile-shadow, none); box-sizing:border-box; }
