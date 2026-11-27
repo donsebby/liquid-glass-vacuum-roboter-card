@@ -1,4 +1,4 @@
-const CARD_VERSION = '1.2.0';
+const CARD_VERSION = '1.3.0';
 // eslint-disable-next-line no-console
 console.info(`%c SAUGROBOTER-CARD %c v${CARD_VERSION} `, 'color: white; background: #00bfa5; font-weight: 700;', 'color: #00bfa5; background: white; font-weight: 700;');
 
