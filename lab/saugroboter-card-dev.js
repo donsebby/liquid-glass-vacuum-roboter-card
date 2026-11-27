@@ -226,7 +226,7 @@ class SaugroboterCard extends HTMLElement {
         .cards.solid .btn.active { background: rgb(255,159,10); color:#16181d; border:none; }
         .cards.solid .map { border-radius: calc(var(--lg-radius, 20px) - 4px);
           background: var(--lg-tile-bg, color-mix(in srgb, var(--vc-ink) 8%, transparent));
-          border:1px solid rgba(255,255,255,0.04); box-sizing:border-box; }
+          border:var(--lg-tile-edge, 1px solid rgba(255,255,255,0.04)); box-shadow:var(--lg-tile-shadow, none); box-sizing:border-box; }
         .cards.solid .map-placeholder { font-size:12px; color: var(--secondary-text-color, rgba(255,255,255,0.6)); }
         .cards.solid .sline { margin-top:12px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.06); font-size:13px; }
         .cards.solid .sline.active .stxt { color: color-mix(in srgb, var(--c) 70%, var(--vc-ink)); }
